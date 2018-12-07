@@ -1,0 +1,58 @@
+<header>
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{css/stylesheet.css}">
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script
+		src="//s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+	<script src="sweetalert2/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
+</header>
+
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700'
+	rel='stylesheet' type='text/css'>
+<meta charset="UTF-8">
+</head>
+
+<div id="wrapper" class="container">
+	<h1>Lista de Consultas</h1>
+	<p>Clique em um consulta para detalhes.</p>
+	<fieldset>
+		<div class="col-md-12">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Código da Consulta</th>
+						<th scope="col">Tipo da Consulta</th>
+						<th scope="col">Médico</th>
+						<th scope="col">Paciente</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="appointment: ${appointments}">
+						<td><a th:href="'view_appointment/' + ${appointment.code}"
+							th:text="${appointment.code}"></a></td>
+						<td th:text="${appointment.type.name}">Jack</td>
+						<td><a th:href="'view_doctor/' + ${appointment.doctor.code}"
+							th:text="${appointment.doctor.name}"></a></td>
+						<td><a
+							th:href="'view_patient/' + ${appointment.patient.code}"
+							th:text="${appointment.patient.name}"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
+	<div class="col-md-12">
+		<button onclick='window.location.replace("index")'
+			class="btn btn-primary btn-lg btn-block info">Voltar</button>
+	</div>
+</div>

@@ -1,14 +1,18 @@
-<!-- Bootstrap and default CSS -->
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-	rel="stylesheet" th:href="@{css/stylesheet.css}">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-
-<!-- Bootstrap and default JQuery -->
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
+<header>
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{css/stylesheet.css}">
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script
+		src="//s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+	<script src="sweetalert2/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
+</header>
 <!-- Sweet Alert -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.js"></script>
@@ -32,13 +36,45 @@
 	<h1>Clínica Médica - EP</h1>
 	<p>Por favor, selecione uma das opções.</p>
 
-	<button class="btn btn-primary"
-		onclick='window.location.replace("new_appointment")'>Nova
-		consulta</button>
-	<br>
-	<button class="btn btn-primary"
-		onclick='window.location.replace("view_appointments")'>Ver
-		consultas</button>
+	<fieldset>
+		<h2 class="col-md-12">Pacientes</h2>
+		<div class="col-md-12">
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("new_patient")' style="background-color: darkseagreen;">Novo
+				paciente</button>
+			<br>
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("view_patients")' style="background-color: darkseagreen;">Ver
+				pacientes</button>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<br>
+		<h2 class="col-md-12">Médicos</h2>
+		<div class="col-md-12">
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("new_doctor")' style="background-color: cadetblue;">Novo médico</button>
+			<br>
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("view_doctors")' style="background-color: cadetblue;">Ver
+				médicos</button>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<br>
+		<h2 class="col-md-12">Consultas</h2>
+		<div class="col-md-12">
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("new_appointment")' style="background-color: darkcyan;">Nova
+				consulta</button>
+			<br>
+			<button class="col-md-12 btn btn-primary"
+				onclick='window.location.replace("view_appointments")' style="background-color: darkcyan;">Ver
+				consultas</button>
+		</div>
+	</fieldset>
 </div>
 
 <script th:inline="javascript">

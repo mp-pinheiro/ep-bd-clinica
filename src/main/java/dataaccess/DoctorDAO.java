@@ -57,6 +57,23 @@ public class DoctorDAO extends DAO {
 		}
 		return doctorArray;
 	}
+	
+	public ArrayList<Doctor> getDoctors() {
+		ArrayList<Doctor> doctorArray = new ArrayList<>();
+		String query = "SELECT * FROM medico NATURAL JOIN funcionario ";
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				doctorArray.add(getDoctor(rs));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return doctorArray;
+	}
 
 	public boolean checkDoctorExists(int crm) {
 		String query = "SELECT * FROM medico " + "WHERE crm_medico = ?";

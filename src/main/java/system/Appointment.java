@@ -10,7 +10,6 @@ import dataaccess.DoctorDAO;
 import dataaccess.PatientDAO;
 import dataaccess.PaymentDAO;
 import dataaccess.SpecialtyDAO;
-import dataaccess.TaxDAO;
 
 public class Appointment {
 	private int code;
@@ -108,20 +107,16 @@ public class Appointment {
 		this.payment = paymentDAO.getPayment(getCode());
 		paymentDAO.closeConnection();
 	}
-	
-	public void makePayment(int type) {
-		Payment payment = new Payment();
-		payment.setCode(getCode());
-		TaxDAO taxDAO = new TaxDAO();
-		float tax = taxDAO.getTax(getType().getCode(), getDate().getMonthValue()) / 100f;
-		taxDAO.closeConnection();
-		float commission = getDoctor().getCommission() / 100f;
-		payment.setValue(Math.round(getType().getValue() * commission * tax));
-		payment.setType(type);
-		payment.setStatus(true);
-		
-		PaymentDAO paymentDAO = new PaymentDAO();
-		paymentDAO.insertPayment(payment);
-		paymentDAO.closeConnection();
+
+	public void setDoctorInstance(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public void setPatientInstance(Patient patient) {
+		this.patient = patient;
+	}
+
+	public void setTypeInstance(Specialty specialty) {
+		this.type = specialty;		
 	}
 }

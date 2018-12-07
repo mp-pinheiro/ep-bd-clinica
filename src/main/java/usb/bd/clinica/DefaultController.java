@@ -14,10 +14,12 @@ import dataaccess.AppointmentDAO;
 import dataaccess.DirectorDAO;
 import dataaccess.DoctorDAO;
 import dataaccess.PatientDAO;
+import dataaccess.PaymentDAO;
 import dataaccess.SpecialtyDAO;
 import system.Appointment;
 import system.Doctor;
 import system.Patient;
+import system.Payment;
 
 @Controller
 public class DefaultController {
@@ -28,6 +30,11 @@ public class DefaultController {
 
 	@GetMapping("/")
 	public String index(Model model) {
+		return "index";
+	}
+	
+	@GetMapping("/index")
+	public String indexRemap(Model model) {
 		return "index";
 	}
 
@@ -153,7 +160,7 @@ public class DefaultController {
 		AppointmentDAO appointmentDAO = new AppointmentDAO();
 		String success = appointmentDAO.insertAppointment(appointment);
 		appointmentDAO.closeConnection();
-		setMessageAttributes(redirectAttributes, success, "paciente");
+		setMessageAttributes(redirectAttributes, success, "consulta");
 		return "redirect:/";
 	}
 
@@ -189,6 +196,15 @@ public class DefaultController {
 		return "view_doctor";
 	}
 	
+	@PostMapping("/pay_appointment")
+	public String postPayment(@ModelAttribute Payment payment, RedirectAttributes redirectAttributes) {
+		PaymentDAO paymentDAO = new PaymentDAO();
+		String success = paymentDAO.makePayment(payment.getCode());
+		paymentDAO.closeConnection();
+		setMessageAttributes(redirectAttributes, success, "paciente");
+		return "redirect:/view_appointment/" + payment.getCode();
+	}
+	
 	@GetMapping("/view_appointment/{id}")
 	public String getAppointmentById(@PathVariable int id, RedirectAttributes redirectAttributes) {
 		AppointmentDAO appointmentDAO = new AppointmentDAO();
@@ -199,6 +215,34 @@ public class DefaultController {
 
 	@GetMapping("/view_appointment")
 	public String viewAppointment(Model model) {
+		model.addAttribute("payment", new Payment());
 		return "view_appointment";
+	}
+	
+	@GetMapping("/view_appointments")
+	public String viewAppointments(Model model) {
+		AppointmentDAO appointmentDAO = new AppointmentDAO();
+		ArrayList<Appointment> appointments = appointmentDAO.getAppointments();
+		model.addAttribute("appointments", appointments);
+		appointmentDAO.closeConnection();
+		return "view_appointments";
+	}
+	
+	@GetMapping("/view_doctors")
+	public String viewDoctors(Model model) {
+		DoctorDAO doctorDAO = new DoctorDAO();
+		ArrayList<Doctor> doctors = doctorDAO.getDoctors();
+		model.addAttribute("doctors", doctors);
+		doctorDAO.closeConnection();
+		return "view_doctors";
+	}
+	
+	@GetMapping("/view_patients")
+	public String viewPatients(Model model) {
+		PatientDAO patientDAO = new PatientDAO();
+		ArrayList<Patient> patients = patientDAO.getPatients();
+		model.addAttribute("patients", patients);
+		patientDAO.closeConnection();
+		return "view_patients";
 	}
 }

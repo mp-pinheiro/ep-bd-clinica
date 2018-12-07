@@ -26,7 +26,7 @@
 	<h1>Visualizar Consulta</h1>
 	<p>Informações da consulta.</p>
 	<form id="form-work" class="" name="form-work" action="#"
-		th:action="@{/pay_appointment}" th:object="${doctor}" method="post">
+		th:action="@{/pay_appointment}" th:object="${payment}" method="post">
 		<fieldset>
 			<div class="form-group">
 				<div class="col-md-12">
@@ -56,7 +56,7 @@
 				<div class="col-md-12">
 					<label class="control-label" for="doctor" multiple>Dia da
 						Consulta</label> <input class="form-control"
-						th:value="${appointment.date}" readonly /> </select>
+						th:value="${appointment.date}" readonly />
 				</div>
 			</div>
 
@@ -64,20 +64,44 @@
 				<div class="col-md-12">
 					<label class="control-label" for="time" multiple>Horário da
 						Consulta</label> <input class="form-control"
-						th:value="${appointment.time}" readonly /> </select>
+						th:value="${appointment.time}" readonly />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-12">
-					<label class="control-label" for="time" multiple>Status da
-						Consulta</label> <input th:if="${appointment.status}" class="form-control"
-						value="Realizada" readonly /> <input th:unless="${appointment.status}"
-						class="form-control" value="Não realizada" readonly /> </select>
+					<label class="control-label" for="time">Status da Consulta</label>
+					<input th:if="${appointment.status}" class="form-control"
+						value="Realizada" readonly /> <input
+						th:unless="${appointment.status}" class="form-control"
+						value="Não realizada" readonly />
 				</div>
 			</div>
 
 			<div class="form-group">
+				<div class="col-md-12">
+					<label class="control-label" for="value" multiple>Valor da
+						Consulta</label> <input class="form-control"
+						th:value="'R$' + ${appointment.payment.value} + ',00'" readonly />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+					<label class="control-label" for="value" multiple>Status do
+						Pagamento</label> <input th:if="${appointment.payment.status}"
+						class="form-control" value="Pagamento realizado" readonly /> <input
+						th:unless="${appointment.payment.status}" class="form-control"
+						value="Pagamento pendente" readonly />
+				</div>
+			</div>
+
+			<div class="form-group" hidden>
+				<input class="form-control" th:name="code"
+					th:field="${appointment.code}" />
+			</div>
+
+			<div class="form-group" th:if="${!appointment.payment.status}">
 				<div class="col-md-12">
 					<button type="submit" class="btn btn-primary btn-lg btn-block info"
 						style="background-color: darkseagreen;">Pagar</button>
@@ -86,9 +110,8 @@
 
 		</fieldset>
 	</form>
-	<div class="form-group">
-		<div class="col-md-12">
-			<button type="submit" class="btn btn-primary btn-lg btn-block info">Voltar</button>
-		</div>
+	<div class="col-md-12">
+		<button onclick='window.location.replace("index")'
+			class="btn btn-primary btn-lg btn-block info">Voltar</button>
 	</div>
 </div>

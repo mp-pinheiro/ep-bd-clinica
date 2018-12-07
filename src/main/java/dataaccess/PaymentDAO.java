@@ -4,15 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-import system.Patient;
 import system.Payment;
 
 public class PaymentDAO extends DAO {
 	public Payment getPayment(int code) {
-		String query = "SELECT * FROM consulta "
+		String query = "SELECT * FROM pagamento "
 				+ "WHERE cod_consulta = ?";
 		PreparedStatement preparedStatement;
 		Payment payment = null;
@@ -62,5 +59,23 @@ public class PaymentDAO extends DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public String makePayment(int code) {
+		String query = "UPDATE pagamento "
+				+ "SET status_pagamento = ? "
+				+ "WHERE cod_consulta = ? ";
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setBoolean(1, true);
+			preparedStatement.setInt(2, code);
+			System.out.println(code);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
