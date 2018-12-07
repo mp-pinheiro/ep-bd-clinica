@@ -1,0 +1,70 @@
+<!-- Bootstrap and default CSS -->
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+	rel="stylesheet" th:href="@{css/stylesheet.css}">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap and default JQuery -->
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<!-- Sweet Alert -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.css">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700'
+	rel='stylesheet' type='text/css'>
+</head>
+
+<div id="wrapper" class="container">
+
+	<figure class="page-head-image">
+		<img th:src="@{img/hospital.jpg}" />
+	</figure>
+
+	<h1>Clínica Médica - EP</h1>
+	<p>Por favor, selecione uma das opções.</p>
+
+	<button class="btn btn-primary"
+		onclick='window.location.replace("new_appointment")'>Nova
+		consulta</button>
+	<br>
+	<button class="btn btn-primary"
+		onclick='window.location.replace("view_appointments")'>Ver
+		consultas</button>
+</div>
+
+<script th:inline="javascript">
+	var success = /*[[${message}]]*/;
+	let type = /*[[${type}]]*/;
+	switch(success){
+		case "exists":
+			swal(
+				`Erro!`,
+				`Este ${type} já está cadastrado!`,
+				`error`
+			)
+			break;
+		case "unknown":
+			swal(
+				`Erro!`,
+				`Ocorreu um erro ao cadastrar o ${type}, contate a administração!`,
+				`error`
+			)
+			break;
+		case "success":
+			swal(
+				`Sucessso!`,
+				`O ${type} foi cadastrado com sucesso!`,
+				`success`
+			)
+			break;
+	}
+</script>

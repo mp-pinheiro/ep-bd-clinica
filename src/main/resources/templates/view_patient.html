@@ -1,0 +1,86 @@
+<header>
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{css/stylesheet.css}">
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script
+		src="//s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+	<script src="sweetalert2/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
+</header>
+
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700'
+	rel='stylesheet' type='text/css'>
+<meta charset="UTF-8">
+</head>
+
+<div id="wrapper" class="container">
+	<h1>Visualizar Paciente</h1>
+	<p>Informações do paciente.</p>
+	<form id="form-work" class="" name="form-work" action="#">
+		<fieldset>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="nome">Nome Completo</label> <input
+						id="name" class="form-control" placeholder="João Pereira da Silva"
+						type="text" th:value="${patient.name}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="tel">Telefone</label> <input
+						id="tel" class="form-control" placeholder="90000-0000" type="text"
+						th:value="${patient.phone}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="email">Email</label> <input
+						id="email" class="form-control"
+						placeholder="joao.pereira.silva@gmail.com" type="text"
+						th:value="${patient.email}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="district">Data de
+						Nascimento</label> <input id="birth" class="form-control"
+						placeholder="01/01/1901" type="text"
+						th:value="${patient.birthDate}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="nome">Sexo</label> <input
+						id="sex" class="form-control" type="text" th:value="${patient.sex}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label class="control-label" for="district">CPF</label> <input
+						id="cpf" class="form-control" placeholder="000.000.000-00"
+						type="text" th:value="${patient.cpf}" readonly>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-primary btn-lg btn-block info">Voltar</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

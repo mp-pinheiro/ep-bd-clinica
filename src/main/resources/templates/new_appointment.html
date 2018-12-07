@@ -1,0 +1,77 @@
+<header>
+	<link rel="stylesheet" th:href="@{css/stylesheet.css}">
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+		crossorigin="anonymous">
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script
+		src="//s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+	<script th:src="@{scripts/multi.min.js}"></script>
+	<link rel="stylesheet" th:href="@{css/multi.min.css}">
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+</header>
+
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700'
+	rel='stylesheet' type='text/css'>
+<meta charset="UTF-8">
+</head>
+
+<div id="wrapper" class="container">
+	<h1>Nova Consulta</h1>
+	<p>Escolha o paciente e o tipo de consulta.</p>
+	<form id="form-work" class="" name="form-work" action="#"
+		th:action="@{/new_appointment}" th:object="${appointment}"
+		method="post">
+		<fieldset>
+			<div class="form-group">
+				<div class="col-md-12">
+					<label class="control-label" for="patient">Paciente</label> <select
+						class="search-select" th:field="*{patient}">
+						<option th:each="patient: ${patients}" th:value="${patient.code}"
+							th:utext="${patient.name}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+					<label class="control-label" for="specialty" multiple>Tipo
+						de Consulta</label> <select class="search-select" id="specialty" th:field="*{type}">
+						<option th:each="specialty: ${specialties}"
+							th:value="${specialty.code}" th:utext="${specialty.name}"></option>
+					</select>
+				</div>
+			</div>
+			<script>
+				$('.search-select').selectize({
+					create : false
+				});
+			</script>
+
+			<div class="form-group">
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-primary btn-lg btn-block info">Próximo</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
