@@ -22,20 +22,22 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `nome_cliente` varchar(50) NOT NULL,
   `telefone_cliente` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.cliente: ~2 rows (approximately)
+-- Dumping data for table clinica_ep.cliente: ~3 rows (approximately)
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
 INSERT INTO `cliente` (`cod_cliente`, `nome_cliente`, `telefone_cliente`) VALUES
 	(10, 'Matheus Pinheiro', '11987973968'),
 	(12, 'Nicolas Rodrigues', '11321654789'),
-	(13, 'asd', '1234567899_');
+	(13, 'Marcos Rodrigues', '1234567899_'),
+	(14, 'Eliseia S Pinheiro', '11654567898');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.consulta
 CREATE TABLE IF NOT EXISTS `consulta` (
   `cod_consulta` int(11) NOT NULL AUTO_INCREMENT,
   `cod_funcionario` int(11) NOT NULL,
+  `cod_diagnostico` int(11) DEFAULT NULL,
   `cod_cliente` int(11) NOT NULL,
   `tipo_consulta` int(11) NOT NULL DEFAULT '1',
   `data_consulta` datetime NOT NULL,
@@ -44,52 +46,37 @@ CREATE TABLE IF NOT EXISTS `consulta` (
   KEY `FK_consulta_cliente` (`cod_cliente`),
   KEY `FK_consulta_medico` (`cod_funcionario`),
   KEY `FK_consulta_especialidade` (`tipo_consulta`),
+  KEY `FK_consulta_diagnostico` (`cod_diagnostico`),
   CONSTRAINT `FK_consulta_cliente` FOREIGN KEY (`cod_cliente`) REFERENCES `cliente` (`cod_cliente`),
+  CONSTRAINT `FK_consulta_diagnostico` FOREIGN KEY (`cod_diagnostico`) REFERENCES `diagnostico` (`cod_diagnostico`),
   CONSTRAINT `FK_consulta_especialidade` FOREIGN KEY (`tipo_consulta`) REFERENCES `especialidade` (`cod_especialidade`),
   CONSTRAINT `FK_consulta_medico` FOREIGN KEY (`cod_funcionario`) REFERENCES `medico` (`cod_funcionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.consulta: ~5 rows (approximately)
+-- Dumping data for table clinica_ep.consulta: ~6 rows (approximately)
 /*!40000 ALTER TABLE `consulta` DISABLE KEYS */;
-INSERT INTO `consulta` (`cod_consulta`, `cod_funcionario`, `cod_cliente`, `tipo_consulta`, `data_consulta`, `status_consulta`) VALUES
-	(1, 23, 13, 1, '2018-12-06 09:00:00', 0),
-	(2, 23, 10, 1, '2018-12-06 10:00:00', 0),
-	(3, 23, 10, 1, '2018-12-06 16:00:00', 0),
-	(4, 23, 10, 1, '2018-12-06 13:00:00', 0),
-	(5, 23, 10, 1, '2018-12-07 17:00:00', 0);
+INSERT INTO `consulta` (`cod_consulta`, `cod_funcionario`, `cod_diagnostico`, `cod_cliente`, `tipo_consulta`, `data_consulta`, `status_consulta`) VALUES
+	(5, 23, NULL, 10, 1, '2018-12-07 09:00:00', 0),
+	(6, 21, NULL, 10, 4, '2018-12-08 11:00:00', 0),
+	(7, 22, NULL, 12, 4, '2018-12-10 17:00:00', 0),
+	(8, 22, NULL, 13, 5, '2018-12-07 16:00:00', 0),
+	(9, 23, NULL, 10, 1, '2019-01-06 19:00:00', 0),
+	(10, 27, NULL, 14, 20, '2018-12-21 17:00:00', 0);
 /*!40000 ALTER TABLE `consulta` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.diagnostico
 CREATE TABLE IF NOT EXISTS `diagnostico` (
   `cod_diagnostico` int(11) NOT NULL AUTO_INCREMENT,
-  `cod_consulta` int(11) NOT NULL,
-  `cod_funcionario` int(11) NOT NULL,
-  `horario_diagnostico` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `cod_tratamento` int(11) NOT NULL,
   `descricao_diagnostico` varchar(5000) NOT NULL,
   PRIMARY KEY (`cod_diagnostico`),
-  KEY `FK_diagnostico_consulta` (`cod_consulta`),
-  KEY `FK_diagnostico_medico` (`cod_funcionario`),
-  CONSTRAINT `FK_diagnostico_consulta` FOREIGN KEY (`cod_consulta`) REFERENCES `consulta` (`cod_consulta`),
-  CONSTRAINT `FK_diagnostico_medico` FOREIGN KEY (`cod_funcionario`) REFERENCES `medico` (`cod_funcionario`)
+  KEY `FK_diagnostico_tratamento` (`cod_tratamento`),
+  CONSTRAINT `FK_diagnostico_tratamento` FOREIGN KEY (`cod_tratamento`) REFERENCES `tratamento` (`cod_tratamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table clinica_ep.diagnostico: ~0 rows (approximately)
 /*!40000 ALTER TABLE `diagnostico` DISABLE KEYS */;
 /*!40000 ALTER TABLE `diagnostico` ENABLE KEYS */;
-
--- Dumping structure for table clinica_ep.diagnostico_tratamento
-CREATE TABLE IF NOT EXISTS `diagnostico_tratamento` (
-  `cod_diagnostico` int(11) NOT NULL,
-  `cod_tratamento` int(11) NOT NULL,
-  PRIMARY KEY (`cod_diagnostico`,`cod_tratamento`),
-  KEY `FK__tratamento` (`cod_tratamento`),
-  CONSTRAINT `FK__tratamento` FOREIGN KEY (`cod_tratamento`) REFERENCES `tratamento` (`cod_tratamento`),
-  CONSTRAINT `FK_diagnostico_tratamento_diagnostico` FOREIGN KEY (`cod_diagnostico`) REFERENCES `diagnostico` (`cod_diagnostico`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table clinica_ep.diagnostico_tratamento: ~0 rows (approximately)
-/*!40000 ALTER TABLE `diagnostico_tratamento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `diagnostico_tratamento` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.diretor
 CREATE TABLE IF NOT EXISTS `diretor` (
@@ -98,23 +85,168 @@ CREATE TABLE IF NOT EXISTS `diretor` (
   CONSTRAINT `FK_diretor_funcionario` FOREIGN KEY (`cod_funcionario`) REFERENCES `funcionario` (`cod_funcionario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.diretor: ~1 rows (approximately)
+-- Dumping data for table clinica_ep.diretor: ~2 rows (approximately)
 /*!40000 ALTER TABLE `diretor` DISABLE KEYS */;
 INSERT INTO `diretor` (`cod_funcionario`) VALUES
-	(2);
+	(2),
+	(28);
 /*!40000 ALTER TABLE `diretor` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.doenca
 CREATE TABLE IF NOT EXISTS `doenca` (
-  `cod_doenca` int(11) NOT NULL,
-  `nome_doenca` varchar(50) NOT NULL,
+  `cod_doenca` int(11) NOT NULL AUTO_INCREMENT,
+  `cod_nacional_doenca` varchar(50) CHARACTER SET latin2 NOT NULL,
+  `nome_doenca` varchar(500) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`cod_doenca`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1021 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table clinica_ep.doenca: ~0 rows (approximately)
+-- Dumping data for table clinica_ep.doenca: ~144 rows (approximately)
 /*!40000 ALTER TABLE `doenca` DISABLE KEYS */;
-INSERT INTO `doenca` (`cod_doenca`, `nome_doenca`) VALUES
-	(0, 'Sífilis Congênita');
+INSERT INTO `doenca` (`cod_doenca`, `cod_nacional_doenca`, `nome_doenca`) VALUES
+	(766, 'A001', 'Cólera devida a Vibrio cholerae 01\r'),
+	(767, 'A009', 'Cólera não especificada\r'),
+	(768, 'A010', 'Febre tifóide\r'),
+	(769, 'A011', 'Febre paratifóide A\r'),
+	(770, 'A012', 'Febre paratifóide B\r'),
+	(771, 'A013', 'Febre paratifóide C\r'),
+	(772, 'A014', 'Febre paratifóide não especificada\r'),
+	(773, 'A020', 'Enterite por salmonela\r'),
+	(774, 'A021', 'Septicemia por salmonela\r'),
+	(775, 'A022', 'Infecções localizadas por salmonela\r'),
+	(776, 'A028', 'Outras infecções especificadas por salmonela\r'),
+	(777, 'A029', 'Infecção não especificada por salmonela\r'),
+	(778, 'A030', 'Shiguelose devida a Shigella dysenteriae\r'),
+	(779, 'A031', 'Shiguelose devida a Shigella flexneri\r'),
+	(780, 'A032', 'Shiguelose devida a Shigella boydii\r'),
+	(781, 'A033', 'Shiguelose devida a Shigella sonnei\r'),
+	(782, 'A038', 'Outras shigueloses\r'),
+	(783, 'A039', 'Shiguelose não especificada\r'),
+	(784, 'A040', 'Infecção por Escherichia coli enteropatogênica\r'),
+	(785, 'A041', 'Infecção por Escherichia coli enterotoxigênica\r'),
+	(786, 'A042', 'Infecção por Escherichia coli enteroinvasiva\r'),
+	(787, 'A043', 'Infecção por Escherichia coli enterohemorrágica\r'),
+	(788, 'A044', 'Outras infecções intestinais por Escherichia coli\r'),
+	(789, 'A045', 'Enterite por Campylobacter\r'),
+	(790, 'A046', 'Enterite devida a Yersinia enterocolítica\r'),
+	(791, 'A047', 'Enterocolite devida a Clostridium difficile\r'),
+	(792, 'A048', 'Outras infecções bacterianas intestinais especificadas\r'),
+	(793, 'A049', 'Infecção intestinal bacteriana não especificada\r'),
+	(794, 'A050', 'Intoxicação alimentar estafilocócica\r'),
+	(795, 'A051', 'Botulismo\r'),
+	(796, 'A052', 'Intoxicação alimentar devida a Clostridium perfringens [Clostridium welchii]\r'),
+	(797, 'A053', 'Intoxicação alimentar devida a Vibrio parahemolyticus\r'),
+	(798, 'A054', 'Intoxicação alimentar devida a Bacillus cereus\r'),
+	(799, 'A058', 'Outras intoxicações alimentares bacterianas especificadas\r'),
+	(800, 'A059', 'Intoxicação alimentar bacteriana não especificada\r'),
+	(801, 'A060', 'Disenteria amebiana aguda\r'),
+	(802, 'A061', 'Amebíase intestinal crônica\r'),
+	(803, 'A062', 'Colite amebiana não-disentérica\r'),
+	(804, 'A063', 'Ameboma intestinal\r'),
+	(805, 'A064', 'Abscesso amebiano do fígado\r'),
+	(806, 'A065', 'Abscesso amebiano do pulmão\r'),
+	(807, 'A066', 'Abscesso amebiano do cérebro\r'),
+	(808, 'A067', 'Amebíase cutânea\r'),
+	(809, 'A068', 'Infecção amebiana de outras localizações\r'),
+	(810, 'A069', 'Amebíase não especificada\r'),
+	(811, 'A070', 'Balantidíase\r'),
+	(812, 'A071', 'Giardíase [lamblíase]\r'),
+	(813, 'A072', 'Criptosporidiose\r'),
+	(814, 'A073', 'Isosporíase\r'),
+	(815, 'A078', 'Outras doenças intestinais especificadas por protozoários\r'),
+	(816, 'A079', 'Doença intestinal não especificada por protozoários\r'),
+	(817, 'A080', 'Enterite por rotavírus\r'),
+	(818, 'A081', 'Gastroenteropatia aguda pelo agente de Norwalk\r'),
+	(819, 'A082', 'Enterite por adenovírus\r'),
+	(820, 'A083', 'Outras enterites virais\r'),
+	(821, 'A084', 'Infecção intestinal devida a vírus não especificado\r'),
+	(822, 'A085', 'Outras infecções intestinais especificadas\r'),
+	(823, 'A09', 'Diarréia e gastroenterite de origem infecciosa presumível\r'),
+	(824, 'A150', 'Tuberculose pulmonar\r'),
+	(825, 'A151', 'Tuberculose pulmonar\r'),
+	(826, 'A152', 'Tuberculose pulmonar\r'),
+	(827, 'A153', 'Tuberculose pulmonar\r'),
+	(828, 'A154', 'Tuberculose dos gânglios intratorácicos\r'),
+	(829, 'A155', 'Tuberculose da laringe\r'),
+	(830, 'A156', 'Pleuris tuberculoso\r'),
+	(831, 'A157', 'Tuberculose primária das vias respiratórias\r'),
+	(832, 'A158', 'Outras formas de tuberculose das vias respiratórias\r'),
+	(833, 'A159', 'Tuberculose não especificada das vias respiratórias\r'),
+	(834, 'A160', 'Tuberculose pulmonar com exames bacteriológico e histológico negativos\r'),
+	(835, 'A161', 'Tuberculose pulmonar\r'),
+	(836, 'A162', 'Tuberculose pulmonar\r'),
+	(837, 'A163', 'Tuberculose dos gânglios intratorácicos\r'),
+	(838, 'A164', 'Tuberculose da laringe\r'),
+	(839, 'A165', 'Pleurisia tuberculosa\r'),
+	(840, 'A167', 'Tuberculosa respiratória primária sem menção de confirmação bacteriológica ou histológica\r'),
+	(841, 'A168', 'Outras formas de tuberculose das vias respiratórias\r'),
+	(842, 'A169', 'Tuberculose respiratória\r'),
+	(843, 'A170', 'Meningite tuberculosa\r'),
+	(844, 'A171', 'Tuberculoma meníngeo\r'),
+	(845, 'A178', 'Outras tuberculoses do sistema nervoso\r'),
+	(846, 'A179', 'Tuberculose não especificada do sistema nervoso\r'),
+	(847, 'A180', 'Tuberculose óssea e das articulações\r'),
+	(848, 'A181', 'Tuberculose do aparelho geniturinário\r'),
+	(849, 'A182', 'Linfadenopatia tuberculosa periférica\r'),
+	(850, 'A183', 'Tuberculose do intestino\r'),
+	(851, 'A184', 'Tuberculose de pele e do tecido celular subcutâneo\r'),
+	(852, 'A185', 'Tuberculose do olho\r'),
+	(853, 'A186', 'Tuberculose do ouvido\r'),
+	(854, 'A187', 'Tuberculose das supra-renais\r'),
+	(855, 'A188', 'Tuberculose de outros órgãos especificados\r'),
+	(856, 'A190', 'Tuberculose miliar aguda de localização única e especificada\r'),
+	(857, 'A191', 'Tuberculose miliar aguda de múltiplas localizações\r'),
+	(858, 'A192', 'Tuberculose miliar aguda não especificada\r'),
+	(859, 'A198', 'Outras tuberculoses miliares\r'),
+	(860, 'A199', 'Tuberculose miliar não especificada\r'),
+	(861, 'A200', 'Peste bubônica\r'),
+	(862, 'A201', 'Peste celulocutânea\r'),
+	(863, 'A202', 'Peste pneumônica\r'),
+	(864, 'A203', 'Peste meníngea\r'),
+	(865, 'A207', 'Peste septicêmica\r'),
+	(866, 'A208', 'Outras formas de peste\r'),
+	(867, 'A209', 'Peste\r'),
+	(868, 'A210', 'Tularemia ulceroglandular\r'),
+	(869, 'A211', 'Tularemia oculoglandular\r'),
+	(870, 'A212', 'Tularemia pulmonar\r'),
+	(871, 'A213', 'Tularemia gastrointestinal\r'),
+	(872, 'A217', 'Tularemia generalizada\r'),
+	(873, 'A218', 'Outras formas de tularemia\r'),
+	(874, 'A219', 'Tularemia\r'),
+	(875, 'A220', 'Carbúnculo cutâneo\r'),
+	(876, 'A221', 'Carbúnculo pulmonar\r'),
+	(877, 'A222', 'Carbúnculo gastrointestinal\r'),
+	(878, 'A227', 'Septicemia carbunculosa\r'),
+	(879, 'A228', 'Outras formas de carbúnculo\r'),
+	(880, 'A229', 'Carbúnculo\r'),
+	(881, 'A230', 'Brucelose por Brucella melitensis\r'),
+	(882, 'A231', 'Brucelose por Brucella abortus\r'),
+	(883, 'A232', 'Brucelose por Brucella suis\r'),
+	(884, 'A233', 'Brucelose por Brucella canis\r'),
+	(885, 'A238', 'Outras bruceloses\r'),
+	(886, 'A239', 'Brucelose não especificada\r'),
+	(887, 'A240', 'Mormo\r'),
+	(888, 'A241', 'Melioidose aguda e fulminante\r'),
+	(889, 'A242', 'Melioidose subaguda e crônica\r'),
+	(890, 'A243', 'Outras melioidoses\r'),
+	(891, 'A244', 'Melioidose não especificada\r'),
+	(892, 'A250', 'Espirilose\r'),
+	(893, 'A251', 'Estreptobacilose\r'),
+	(894, 'A259', 'Febre transmitida por mordedura de rato\r'),
+	(895, 'A260', 'Erisipelóide cutâneo\r'),
+	(896, 'A267', 'Septicemia por Erysipelothrix\r'),
+	(897, 'A268', 'Outras formas de erisipelóide\r'),
+	(898, 'A269', 'Erisipelóide não especificado\r'),
+	(899, 'A270', 'Leptopirose icterohemorrágica\r'),
+	(900, 'A278', 'Outras formas de leptospirose\r'),
+	(901, 'A279', 'Leptospirose não especificada\r'),
+	(902, 'A280', 'Pasteurelose\r'),
+	(903, 'A281', 'Doença por arranhadura do gato\r'),
+	(904, 'A282', 'Yersiniose extra-intestinal\r'),
+	(905, 'A288', 'Outras doenças bacterianas zoonóticas especificadas não classificadas em outra parte\r'),
+	(906, 'A289', 'Doença bacteriana zoonótica não especificada\r'),
+	(907, 'A300', 'Hanseníase [lepra] indeterminada\r'),
+	(908, 'A301', 'Hanseníase [lepra] tuberculóide\r'),
+	(909, 'A302', 'Hanseníase [lepra] tuberculóide borderline\r');
 /*!40000 ALTER TABLE `doenca` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.doenca_diagnostico
@@ -215,17 +347,19 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   `cod_funcionario` int(11) NOT NULL AUTO_INCREMENT,
   `nome_funcionario` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_funcionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.funcionario: ~6 rows (approximately)
+-- Dumping data for table clinica_ep.funcionario: ~8 rows (approximately)
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
 INSERT INTO `funcionario` (`cod_funcionario`, `nome_funcionario`) VALUES
-	(2, 'Cassio Ano'),
+	(2, 'Cassio Fernan'),
 	(21, 'João Pereira da Silva'),
-	(22, 'Who'),
-	(23, 'Batima'),
-	(24, 'Jonas'),
-	(26, 'José Perez');
+	(22, 'Orlando Freitas'),
+	(23, 'Francisca Coimbra'),
+	(24, 'Jonas Garcia'),
+	(26, 'José Perez'),
+	(27, 'Daniel Kabata'),
+	(28, 'Kimberly Dias');
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.medico
@@ -246,11 +380,12 @@ CREATE TABLE IF NOT EXISTS `medico` (
 -- Dumping data for table clinica_ep.medico: ~4 rows (approximately)
 /*!40000 ALTER TABLE `medico` DISABLE KEYS */;
 INSERT INTO `medico` (`cod_funcionario`, `crm_medico`, `horario_entrada_medico`, `horario_saida_medico`, `dia_folga_medico`, `cod_diretor`, `comissao_medico`) VALUES
-	(21, '456', '09:00:00', '19:00:00', 5, 2, 80),
+	(21, '45678', '09:00:00', '19:00:00', 5, 2, 80),
 	(22, '654961', '09:00:00', '19:00:00', 6, 2, 100),
 	(23, '123123', '09:00:00', '19:00:00', 1, 2, 10),
 	(24, '87546', '01:00:00', '23:00:00', 5, 2, 100),
-	(26, '123456789', '09:00:00', '09:00:00', 6, 2, 10);
+	(26, '12345', '09:00:00', '09:00:00', 6, 2, 10),
+	(27, '64858', '10:00:00', '21:00:00', 4, 2, 90);
 /*!40000 ALTER TABLE `medico` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.medico_especialidade
@@ -263,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `medico_especialidade` (
   CONSTRAINT `FK_medico_especialidade_medico` FOREIGN KEY (`cod_funcionario`) REFERENCES `medico` (`cod_funcionario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.medico_especialidade: ~19 rows (approximately)
+-- Dumping data for table clinica_ep.medico_especialidade: ~20 rows (approximately)
 /*!40000 ALTER TABLE `medico_especialidade` DISABLE KEYS */;
 INSERT INTO `medico_especialidade` (`cod_funcionario`, `cod_especialidade`) VALUES
 	(21, 4),
@@ -284,7 +419,10 @@ INSERT INTO `medico_especialidade` (`cod_funcionario`, `cod_especialidade`) VALU
 	(26, 2),
 	(26, 3),
 	(26, 4),
-	(26, 6);
+	(26, 6),
+	(27, 16),
+	(27, 19),
+	(27, 20);
 /*!40000 ALTER TABLE `medico_especialidade` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.paciente
@@ -297,12 +435,13 @@ CREATE TABLE IF NOT EXISTS `paciente` (
   CONSTRAINT `FK_paciente_cliente` FOREIGN KEY (`cod_cliente`) REFERENCES `cliente` (`cod_cliente`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.paciente: ~3 rows (approximately)
+-- Dumping data for table clinica_ep.paciente: ~4 rows (approximately)
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
 INSERT INTO `paciente` (`cod_cliente`, `cpf_paciente`, `data_nasc_paciente`, `sexo_paciente`) VALUES
 	(10, '05674343977', '1994-08-27', 'M'),
 	(12, '98765432155', '2020-12-27', 'M'),
-	(13, '12312312312', '1015-12-12', 'M');
+	(13, '12312312312', '1015-12-12', 'M'),
+	(14, '00000000000', '1964-12-12', 'F');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.paciente_doenca
@@ -329,8 +468,15 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
   CONSTRAINT `FK_pagamento_consulta` FOREIGN KEY (`cod_consulta`) REFERENCES `consulta` (`cod_consulta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.pagamento: ~0 rows (approximately)
+-- Dumping data for table clinica_ep.pagamento: ~6 rows (approximately)
 /*!40000 ALTER TABLE `pagamento` DISABLE KEYS */;
+INSERT INTO `pagamento` (`cod_consulta`, `valor_pagamento`, `tipo_pagamento`, `status_pagamento`) VALUES
+	(5, 11, 0, 1),
+	(6, 71, 0, 1),
+	(7, 89, 0, 1),
+	(8, 83, 0, 0),
+	(9, 12, 0, 0),
+	(10, 81, 0, 1);
 /*!40000 ALTER TABLE `pagamento` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.taxa
