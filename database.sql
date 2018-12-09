@@ -22,15 +22,17 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `nome_cliente` varchar(50) NOT NULL,
   `telefone_cliente` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.cliente: ~3 rows (approximately)
+-- Dumping data for table clinica_ep.cliente: ~6 rows (approximately)
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
 INSERT INTO `cliente` (`cod_cliente`, `nome_cliente`, `telefone_cliente`) VALUES
 	(10, 'Matheus Pinheiro', '11987973968'),
 	(12, 'Nicolas Rodrigues', '11321654789'),
-	(13, 'Marcos Rodrigues', '1234567899_'),
-	(14, 'Eliseia S Pinheiro', '11654567898');
+	(13, 'Marcos Fontes', '1234567899_'),
+	(14, 'Eliseia Santos Prada', '11654567898'),
+	(15, 'Maria Vitoria dos Anjos', '11987973968'),
+	(17, 'Erica Damato', '11964452822');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.consulta
@@ -51,31 +53,45 @@ CREATE TABLE IF NOT EXISTS `consulta` (
   CONSTRAINT `FK_consulta_diagnostico` FOREIGN KEY (`cod_diagnostico`) REFERENCES `diagnostico` (`cod_diagnostico`),
   CONSTRAINT `FK_consulta_especialidade` FOREIGN KEY (`tipo_consulta`) REFERENCES `especialidade` (`cod_especialidade`),
   CONSTRAINT `FK_consulta_medico` FOREIGN KEY (`cod_funcionario`) REFERENCES `medico` (`cod_funcionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.consulta: ~6 rows (approximately)
+-- Dumping data for table clinica_ep.consulta: ~11 rows (approximately)
 /*!40000 ALTER TABLE `consulta` DISABLE KEYS */;
 INSERT INTO `consulta` (`cod_consulta`, `cod_funcionario`, `cod_diagnostico`, `cod_cliente`, `tipo_consulta`, `data_consulta`, `status_consulta`) VALUES
-	(5, 23, NULL, 10, 1, '2018-12-07 09:00:00', 0),
-	(6, 21, NULL, 10, 4, '2018-12-08 11:00:00', 0),
-	(7, 22, NULL, 12, 4, '2018-12-10 17:00:00', 0),
-	(8, 22, NULL, 13, 5, '2018-12-07 16:00:00', 0),
-	(9, 23, NULL, 10, 1, '2019-01-06 19:00:00', 0),
-	(10, 27, NULL, 14, 20, '2018-12-21 17:00:00', 0);
+	(5, 23, 14, 10, 1, '2018-12-07 09:00:00', 1),
+	(6, 21, 1, 10, 4, '2018-12-08 11:00:00', 1),
+	(7, 22, 10, 12, 4, '2018-12-10 17:00:00', 1),
+	(8, 22, 11, 13, 5, '2018-12-07 16:00:00', 1),
+	(9, 23, 17, 10, 1, '2019-01-06 19:00:00', 1),
+	(10, 27, NULL, 14, 20, '2018-12-21 17:00:00', 0),
+	(11, 26, 15, 14, 2, '2018-12-09 09:00:00', 1),
+	(12, 23, 16, 10, 1, '2018-12-08 14:00:00', 1),
+	(13, 29, NULL, 13, 1, '2018-12-08 21:00:00', 0),
+	(14, 29, 18, 10, 1, '2018-12-08 23:00:00', 1),
+	(15, 23, 19, 17, 4, '2018-12-09 14:00:00', 1);
 /*!40000 ALTER TABLE `consulta` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.diagnostico
 CREATE TABLE IF NOT EXISTS `diagnostico` (
   `cod_diagnostico` int(11) NOT NULL AUTO_INCREMENT,
-  `cod_tratamento` int(11) NOT NULL,
   `descricao_diagnostico` varchar(5000) NOT NULL,
-  PRIMARY KEY (`cod_diagnostico`),
-  KEY `FK_diagnostico_tratamento` (`cod_tratamento`),
-  CONSTRAINT `FK_diagnostico_tratamento` FOREIGN KEY (`cod_tratamento`) REFERENCES `tratamento` (`cod_tratamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `tratamento_diagnostico` varchar(5000) NOT NULL,
+  `horario_diagnostico` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`cod_diagnostico`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.diagnostico: ~0 rows (approximately)
+-- Dumping data for table clinica_ep.diagnostico: ~9 rows (approximately)
 /*!40000 ALTER TABLE `diagnostico` DISABLE KEYS */;
+INSERT INTO `diagnostico` (`cod_diagnostico`, `descricao_diagnostico`, `tratamento_diagnostico`, `horario_diagnostico`) VALUES
+	(1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a convallis tellus. Maecenas rhoncus eu elit nec sollicitudin. Donec non purus pretium lectus dapibus sagittis luctus sed tortor. Mauris et tortor et metus tempus ornare at in enim. Morbi porttitor tempus tincidunt. Nullam vel rhoncus dolor, at venenatis eros. Praesent ultricies ex nec sem commodo, id convallis risus finibus.', 'Mauris varius luctus eros, in venenatis orci fermentum ut. Suspendisse suscipit consequat dolor, et consectetur felis fermentum a. Nam consectetur, urna nec sodales tincidunt, libero urna dapibus neque, nec egestas magna nibh eu leo. Quisque finibus odio dictum dui placerat auctor. Mauris rutrum augue scelerisque dui sagittis auctor. Vestibulum elementum pretium turpis eu cursus. Sed at justo vel dolor venenatis accumsan eget sed tortor. Cras tincidunt eget enim vitae ornare. Cras vel tincidunt odio. Sed luctus convallis sem vehicula scelerisque. Nullam quis elit nibh. Nam lobortis congue eros. Integer mattis lacus nulla, nec semper neque fringilla at. Pellentesque mollis dolor non augue malesuada volutpat. Curabitur sapien lacus, consectetur ut justo a, efficitur feugiat ligula.', '2018-12-08 21:06:25'),
+	(10, 'Donec feugiat ligula vel ante dignissim, placerat euismod augue porttitor. Curabitur ut sapien aliquet, mattis quam ut, finibus purus. Sed a ante eget metus fringilla semper ac id orci. Curabitur vitae dolor vel nulla sollicitudin mollis. Curabitur sed vehicula odio, venenatis auctor est. Cras interdum lacinia lacus. Aliquam tempus, sapien tristique tincidunt pharetra, dolor augue auctor enim, et venenatis est dolor vel purus.', 'Nunc suscipit tortor et est rhoncus, eu mattis mi fringilla. Nullam rhoncus dapibus semper. Phasellus sed mollis libero. Vivamus porttitor lorem dignissim tempus lacinia. Suspendisse tortor mi, congue non mollis quis, semper eget justo. In gravida felis arcu, commodo laoreet nulla faucibus a. Praesent ornare enim augue, pretium tincidunt elit blandit in. Ut eget urna a dui ornare ornare. Integer eleifend erat eu gravida faucibus.', '2018-12-08 21:06:25'),
+	(11, 'Nunc suscipit tortor et est rhoncus, eu mattis mi fringilla. Nullam rhoncus dapibus semper. Phasellus sed mollis libero. Vivamus porttitor lorem dignissim tempus lacinia. Suspendisse tortor mi, congue non mollis quis, semper eget justo. In gravida felis arcu, commodo laoreet nulla faucibus a. Praesent ornare enim augue, pretium tincidunt elit blandit in. Ut eget urna a dui ornare ornare. Integer eleifend erat eu gravida faucibus.', 'Donec feugiat ligula vel ante dignissim, placerat euismod augue porttitor. Curabitur ut sapien aliquet, mattis quam ut, finibus purus. Sed a ante eget metus fringilla semper ac id orci. Curabitur vitae dolor vel nulla sollicitudin mollis. Curabitur sed vehicula odio, venenatis auctor est. Cras interdum lacinia lacus. Aliquam tempus, sapien tristique tincidunt pharetra, dolor augue auctor enim, et venenatis est dolor vel purus.', '2018-12-08 21:06:25'),
+	(14, 'Venenatis tellus in metus vulputate. Pulvinar mattis nunc sed blandit libero volutpat. Mi proin sed libero enim sed faucibus. A diam maecenas sed enim. Porttitor eget dolor morbi non arcu risus quis varius quam. Purus faucibus ornare suspendisse sed nisi lacus. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae semper. Amet purus gravida quis blandit turpis cursus. Facilisis sed odio morbi quis commodo odio aenean sed. Arcu risus quis varius quam quisque id diam.', 'Condimentum lacinia quis vel eros donec ac odio tempor orci. Viverra tellus in hac habitasse. Mattis ullamcorper velit sed ullamcorper morbi. Id consectetur purus ut faucibus pulvinar elementum integer enim. Ultricies lacus sed turpis tincidunt id aliquet. Duis at consectetur lorem donec massa sapien faucibus. Morbi blandit cursus risus at ultrices mi tempus. Nec dui nunc mattis enim ut tellus elementum. Quam id leo in vitae turpis massa sed. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Quam quisque id diam vel quam elementum pulvinar etiam non. Lobortis scelerisque fermentum dui faucibus in. Aenean sed adipiscing diam donec adipiscing tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt. Amet consectetur adipiscing elit pellentesque habitant. Dui vivamus arcu felis bibendum ut tristique.', '2018-12-08 21:06:25'),
+	(15, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Leo vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Non pulvinar neque laoreet suspendisse interdum consectetur libero id. Amet massa vitae tortor condimentum lacinia quis. Massa vitae tortor condimentum lacinia quis. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Id aliquet risus feugiat in ante. Mi proin sed libero enim sed faucibus turpis in. Nec sagittis aliquam malesuada bibendum. Libero enim sed faucibus turpis in eu. Sed felis eget velit aliquet sagittis id. In hac habitasse platea dictumst quisque sagittis purus sit. Adipiscing elit duis tristique sollicitudin nibh sit. Urna molestie at elementum eu facilisis sed. In mollis nunc sed id semper risus in hendrerit gravida.', '2018-12-08 21:06:25'),
+	(16, 'Lacinia quis vel eros donec ac odio tempor. Tristique risus nec feugiat in fermentum posuere urna nec. Bibendum est ultricies integer quis auctor elit sed vulputate. Nisl tincidunt eget nullam non nisi. Nunc scelerisque viverra mauris in aliquam sem fringilla ut. Eleifend quam adipiscing vitae proin sagittis nisl rhoncus mattis. Aliquam id diam maecenas ultricies. A diam sollicitudin tempor id eu nisl. Ullamcorper dignissim cras tincidunt lobortis feugiat. Leo vel orci porta non pulvinar neque laoreet suspendisse interdum. Tellus at urna condimentum mattis pellentesque id nibh. Malesuada proin libero nunc consequat interdum varius sit amet. Urna cursus eget nunc scelerisque viverra mauris in aliquam.', 'Venenatis tellus in metus vulputate. Pulvinar mattis nunc sed blandit libero volutpat. Mi proin sed libero enim sed faucibus. A diam maecenas sed enim. Porttitor eget dolor morbi non arcu risus quis varius quam. Purus faucibus ornare suspendisse sed nisi lacus. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae semper. Amet purus gravida quis blandit turpis cursus. Facilisis sed odio morbi quis commodo odio aenean sed. Arcu risus quis varius quam quisque id diam.\r\n\r\nCondimentum lacinia quis vel eros donec ac odio tempor orci. Viverra tellus in hac habitasse. Mattis ullamcorper velit sed ullamcorper morbi. Id consectetur purus ut faucibus pulvinar elementum integer enim. Ultricies lacus sed turpis tincidunt id aliquet. Duis at consectetur lorem donec massa sapien faucibus. Morbi blandit cursus risus at ultrices mi tempus. Nec dui nunc mattis enim ut tellus elementum. Quam id leo in vitae turpis massa sed. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Quam quisque id diam vel quam elementum pulvinar etiam non. Lobortis scelerisque fermentum dui faucibus in. Aenean sed adipiscing diam donec adipiscing tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt. Amet consectetur adipiscing elit pellentesque habitant. Dui vivamus arcu felis bibendum ut tristique.', '2018-12-08 21:13:07'),
+	(17, 'Leo vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Non pulvinar neque laoreet suspendisse interdum consectetur libero id. Amet massa vitae tortor condimentum lacinia quis. Massa vitae tortor condimentum lacinia quis. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Id aliquet risus feugiat in ante. Mi proin sed libero enim sed faucibus turpis in. Nec sagittis aliquam malesuada bibendum. Libero enim sed faucibus turpis in eu. Sed felis eget velit aliquet sagittis id. In hac habitasse platea dictumst quisque sagittis purus sit. Adipiscing elit duis tristique sollicitudin nibh sit. Urna molestie at elementum eu facilisis sed. In mollis nunc sed id semper risus in hendrerit gravida.', 'Leo vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Malesuada proin libero nunc consequat interdum varius sit amet mattis. Non pulvinar neque laoreet suspendisse interdum consectetur libero id. Amet massa vitae tortor condimentum lacinia quis. Massa vitae tortor condimentum lacinia quis. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Id aliquet risus feugiat in ante. Mi proin sed libero enim sed faucibus turpis in. Nec sagittis aliquam malesuada bibendum. Libero enim sed faucibus turpis in eu. Sed felis eget velit aliquet sagittis id. In hac habitasse platea dictumst quisque sagittis purus sit. Adipiscing elit duis tristique sollicitudin nibh sit. Urna molestie at elementum eu facilisis sed. In mollis nunc sed id semper risus in hendrerit gravida.', '2018-12-08 21:25:57'),
+	(18, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus viverra nisi ut lobortis. Nullam justo massa, commodo eu posuere id, condimentum et enim. Cras volutpat porttitor dignissim. In ultrices ullamcorper diam. Vivamus sit amet porta ligula. Nulla elementum maximus mi et elementum. Phasellus accumsan nibh eget elementum sollicitudin. In hendrerit porta lorem a consectetur. Cras sollicitudin ac magna non tempor. Pellentesque posuere placerat orci, ut vehicula mauris bibendum et. Aliquam in porta nunc, a volutpat mi.\r\n\r\nCras ac eros in mi vehicula porta. Sed dapibus blandit laoreet. Sed lectus quam, pulvinar suscipit arcu quis, bibendum lobortis ligula. Praesent euismod sit amet turpis nec facilisis. Praesent ut accumsan neque, sed congue felis. Mauris vel pulvinar elit, quis tristique ex. Integer massa metus, porta non urna sed, pellentesque pulvinar erat. Sed molestie, nunc mattis maximus luctus, ante velit vulputate nunc, non pharetra leo nulla eget nunc. Praesent fermentum blandit tellus at pharetra. Curabitur et sollicitudin metus, a lacinia dolor. Nunc faucibus tellus molestie neque facilisis semper.', 'Nullam eleifend ex eu ligula tempus venenatis. Duis tincidunt erat est, at hendrerit augue suscipit sit amet. Etiam quis semper mi, vel auctor massa. Sed vel nunc dolor. Proin sed turpis ante. Duis turpis ante, pharetra sagittis massa ac, sodales lacinia justo. Curabitur lobortis ac nunc sit amet lacinia. Maecenas a tortor ut elit porttitor varius. Nulla iaculis convallis mi eu euismod. Nam nec mauris ligula. Nunc libero augue, luctus a felis in, cursus dignissim sapien. Nunc orci arcu, tempor ac nisl id, tincidunt elementum nibh. Duis quis libero venenatis velit consequat pellentesque.\r\n\r\nDonec feugiat egestas sem, aliquet gravida mauris sollicitudin vel. Nam porta ornare tellus, quis ultrices nisl feugiat et. Nam ex ipsum, lobortis in auctor sit amet, consectetur in orci. Etiam a lorem risus. Proin ultrices velit ut orci luctus malesuada. Nunc hendrerit lobortis pulvinar. Fusce quis facilisis diam, at ultricies mauris. Praesent imperdiet sit amet dolor maximus facilisis. Quisque vitae libero leo. Nulla mattis eleifend massa eu rhoncus.', '2018-12-09 11:20:59'),
+	(19, 'Cras ac eros in mi vehicula porta. Sed dapibus blandit laoreet. Sed lectus quam, pulvinar suscipit arcu quis, bibendum lobortis ligula. Praesent euismod sit amet turpis nec facilisis. Praesent ut accumsan neque, sed congue felis. Mauris vel pulvinar elit, quis tristique ex. Integer massa metus, porta non urna sed, pellentesque pulvinar erat. Sed molestie, nunc mattis maximus luctus, ante velit vulputate nunc, non pharetra leo nulla eget nunc. Praesent fermentum blandit tellus at pharetra. Curabitur et sollicitudin metus, a lacinia dolor. Nunc faucibus tellus molestie neque facilisis semper.\r\n\r\nNullam eleifend ex eu ligula tempus venenatis. Duis tincidunt erat est, at hendrerit augue suscipit sit amet. Etiam quis semper mi, vel auctor massa. Sed vel nunc dolor. Proin sed turpis ante. Duis turpis ante, pharetra sagittis massa ac, sodales lacinia justo. Curabitur lobortis ac nunc sit amet lacinia. Maecenas a tortor ut elit porttitor varius. Nulla iaculis convallis mi eu euismod. Nam nec mauris ligula. Nunc libero augue, luctus a felis in, cursus dignissim sapien. Nunc orci arcu, tempor ac nisl id, tincidunt elementum nibh. Duis quis libero venenatis velit consequat pellentesque.', 'Donec feugiat egestas sem, aliquet gravida mauris sollicitudin vel. Nam porta ornare tellus, quis ultrices nisl feugiat et. Nam ex ipsum, lobortis in auctor sit amet, consectetur in orci. Etiam a lorem risus. Proin ultrices velit ut orci luctus malesuada. Nunc hendrerit lobortis pulvinar. Fusce quis facilisis diam, at ultricies mauris. Praesent imperdiet sit amet dolor maximus facilisis. Quisque vitae libero leo. Nulla mattis eleifend massa eu rhoncus.\r\n\r\nSed rhoncus elit dolor, fermentum aliquam enim aliquam imperdiet. Nunc lacinia, diam et porta iaculis, leo quam efficitur leo, ac condimentum tortor neque vel elit. Praesent in dui id nisi scelerisque accumsan non et odio. Etiam mattis nunc eu tincidunt luctus. Aenean vel augue vel elit viverra egestas non at felis. Quisque eleifend hendrerit nisl, id iaculis nulla tincidunt et. Vivamus eget tortor ac elit molestie mollis.', '2018-12-09 12:20:27');
 /*!40000 ALTER TABLE `diagnostico` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.diretor
@@ -85,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `diretor` (
   CONSTRAINT `FK_diretor_funcionario` FOREIGN KEY (`cod_funcionario`) REFERENCES `funcionario` (`cod_funcionario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.diretor: ~2 rows (approximately)
+-- Dumping data for table clinica_ep.diretor: ~1 rows (approximately)
 /*!40000 ALTER TABLE `diretor` DISABLE KEYS */;
 INSERT INTO `diretor` (`cod_funcionario`) VALUES
 	(2),
@@ -98,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `doenca` (
   `cod_nacional_doenca` varchar(50) CHARACTER SET latin2 NOT NULL,
   `nome_doenca` varchar(500) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`cod_doenca`)
-) ENGINE=InnoDB AUTO_INCREMENT=1021 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=910 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table clinica_ep.doenca: ~144 rows (approximately)
 /*!40000 ALTER TABLE `doenca` DISABLE KEYS */;
@@ -255,12 +271,34 @@ CREATE TABLE IF NOT EXISTS `doenca_diagnostico` (
   `cod_diagnostico` int(11) NOT NULL,
   PRIMARY KEY (`cod_doenca`,`cod_diagnostico`),
   KEY `FK_doenca_diagnostico_diagnostico` (`cod_diagnostico`),
-  CONSTRAINT `FK_doenca_diagnostico_diagnostico` FOREIGN KEY (`cod_diagnostico`) REFERENCES `diagnostico` (`cod_diagnostico`),
-  CONSTRAINT `FK_doenca_diagnostico_doenca` FOREIGN KEY (`cod_doenca`) REFERENCES `doenca` (`cod_doenca`)
+  CONSTRAINT `FK_doenca_diagnostico_diagnostico` FOREIGN KEY (`cod_diagnostico`) REFERENCES `diagnostico` (`cod_diagnostico`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_doenca_diagnostico_doenca` FOREIGN KEY (`cod_doenca`) REFERENCES `doenca` (`cod_doenca`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.doenca_diagnostico: ~0 rows (approximately)
+-- Dumping data for table clinica_ep.doenca_diagnostico: ~21 rows (approximately)
 /*!40000 ALTER TABLE `doenca_diagnostico` DISABLE KEYS */;
+INSERT INTO `doenca_diagnostico` (`cod_doenca`, `cod_diagnostico`) VALUES
+	(766, 10),
+	(766, 11),
+	(767, 10),
+	(767, 14),
+	(767, 16),
+	(768, 16),
+	(768, 18),
+	(768, 19),
+	(769, 10),
+	(769, 14),
+	(769, 15),
+	(771, 18),
+	(778, 17),
+	(780, 17),
+	(781, 11),
+	(782, 15),
+	(788, 11),
+	(822, 15),
+	(829, 15),
+	(838, 1),
+	(852, 1);
 /*!40000 ALTER TABLE `doenca_diagnostico` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.especialidade
@@ -347,9 +385,9 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   `cod_funcionario` int(11) NOT NULL AUTO_INCREMENT,
   `nome_funcionario` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_funcionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.funcionario: ~8 rows (approximately)
+-- Dumping data for table clinica_ep.funcionario: ~13 rows (approximately)
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
 INSERT INTO `funcionario` (`cod_funcionario`, `nome_funcionario`) VALUES
 	(2, 'Cassio Fernan'),
@@ -359,7 +397,12 @@ INSERT INTO `funcionario` (`cod_funcionario`, `nome_funcionario`) VALUES
 	(24, 'Jonas Garcia'),
 	(26, 'José Perez'),
 	(27, 'Daniel Kabata'),
-	(28, 'Kimberly Dias');
+	(28, 'Kimberly Dias'),
+	(29, 'Michel Santos'),
+	(32, 'Gabriella Gomes Souza'),
+	(33, 'Mariano Gomes'),
+	(34, 'Juliano Machado'),
+	(35, 'Thiago Freitas');
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.medico
@@ -377,15 +420,20 @@ CREATE TABLE IF NOT EXISTS `medico` (
   CONSTRAINT `FK_medico_funcionario` FOREIGN KEY (`cod_funcionario`) REFERENCES `funcionario` (`cod_funcionario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.medico: ~4 rows (approximately)
+-- Dumping data for table clinica_ep.medico: ~11 rows (approximately)
 /*!40000 ALTER TABLE `medico` DISABLE KEYS */;
 INSERT INTO `medico` (`cod_funcionario`, `crm_medico`, `horario_entrada_medico`, `horario_saida_medico`, `dia_folga_medico`, `cod_diretor`, `comissao_medico`) VALUES
-	(21, '45678', '09:00:00', '19:00:00', 5, 2, 80),
+	(21, '456787', '09:00:00', '19:00:00', 5, 2, 80),
 	(22, '654961', '09:00:00', '19:00:00', 6, 2, 100),
-	(23, '123123', '09:00:00', '19:00:00', 1, 2, 10),
-	(24, '87546', '01:00:00', '23:00:00', 5, 2, 100),
-	(26, '12345', '09:00:00', '09:00:00', 6, 2, 10),
-	(27, '64858', '10:00:00', '21:00:00', 4, 2, 90);
+	(23, '623173', '09:00:00', '19:00:00', 1, 2, 80),
+	(24, '875468', '01:00:00', '23:00:00', 5, 2, 100),
+	(26, '923453', '09:00:00', '19:00:00', 6, 2, 75),
+	(27, '648582', '10:00:00', '21:00:00', 4, 2, 90),
+	(29, '546451', '15:00:00', '23:00:00', 3, 28, 80),
+	(32, '123484', '06:00:00', '20:00:00', 0, 2, 100),
+	(33, '465841', '10:00:00', '16:00:00', 4, 28, 83),
+	(34, '897565', '06:00:00', '16:00:00', 0, 2, 90),
+	(35, '964169', '09:00:00', '21:00:00', 0, 2, 50);
 /*!40000 ALTER TABLE `medico` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.medico_especialidade
@@ -398,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `medico_especialidade` (
   CONSTRAINT `FK_medico_especialidade_medico` FOREIGN KEY (`cod_funcionario`) REFERENCES `medico` (`cod_funcionario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.medico_especialidade: ~20 rows (approximately)
+-- Dumping data for table clinica_ep.medico_especialidade: ~30 rows (approximately)
 /*!40000 ALTER TABLE `medico_especialidade` DISABLE KEYS */;
 INSERT INTO `medico_especialidade` (`cod_funcionario`, `cod_especialidade`) VALUES
 	(21, 4),
@@ -422,7 +470,15 @@ INSERT INTO `medico_especialidade` (`cod_funcionario`, `cod_especialidade`) VALU
 	(26, 6),
 	(27, 16),
 	(27, 19),
-	(27, 20);
+	(27, 20),
+	(29, 1),
+	(32, 1),
+	(33, 61),
+	(33, 62),
+	(33, 63),
+	(33, 66),
+	(34, 1),
+	(35, 3);
 /*!40000 ALTER TABLE `medico_especialidade` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.paciente
@@ -431,17 +487,20 @@ CREATE TABLE IF NOT EXISTS `paciente` (
   `cpf_paciente` varchar(50) NOT NULL,
   `data_nasc_paciente` date NOT NULL,
   `sexo_paciente` char(1) NOT NULL,
+  `email_paciente` varchar(1000) NOT NULL,
   PRIMARY KEY (`cod_cliente`),
   CONSTRAINT `FK_paciente_cliente` FOREIGN KEY (`cod_cliente`) REFERENCES `cliente` (`cod_cliente`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.paciente: ~4 rows (approximately)
+-- Dumping data for table clinica_ep.paciente: ~5 rows (approximately)
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
-INSERT INTO `paciente` (`cod_cliente`, `cpf_paciente`, `data_nasc_paciente`, `sexo_paciente`) VALUES
-	(10, '05674343977', '1994-08-27', 'M'),
-	(12, '98765432155', '2020-12-27', 'M'),
-	(13, '12312312312', '1015-12-12', 'M'),
-	(14, '00000000000', '1964-12-12', 'F');
+INSERT INTO `paciente` (`cod_cliente`, `cpf_paciente`, `data_nasc_paciente`, `sexo_paciente`, `email_paciente`) VALUES
+	(10, '05674343977', '1994-08-27', 'M', 'mp-pinheiro@hotmail.com'),
+	(12, '98765432155', '2020-12-27', 'M', 'place_holder@mail.com'),
+	(13, '12312312312', '1015-12-12', 'M', 'marcos@email.com'),
+	(14, '00000000000', '1964-12-12', 'F', 'eliseiaa@gmail.com'),
+	(15, '45646546546', '2018-09-12', 'M', 'mp-pinheiro@hotmail.com'),
+	(17, '98646546843', '1987-09-08', 'F', 'erica.damato@gmail.com');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.paciente_doenca
@@ -468,15 +527,20 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
   CONSTRAINT `FK_pagamento_consulta` FOREIGN KEY (`cod_consulta`) REFERENCES `consulta` (`cod_consulta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table clinica_ep.pagamento: ~6 rows (approximately)
+-- Dumping data for table clinica_ep.pagamento: ~10 rows (approximately)
 /*!40000 ALTER TABLE `pagamento` DISABLE KEYS */;
 INSERT INTO `pagamento` (`cod_consulta`, `valor_pagamento`, `tipo_pagamento`, `status_pagamento`) VALUES
 	(5, 11, 0, 1),
 	(6, 71, 0, 1),
 	(7, 89, 0, 1),
-	(8, 83, 0, 0),
-	(9, 12, 0, 0),
-	(10, 81, 0, 1);
+	(8, 83, 0, 1),
+	(9, 12, 0, 1),
+	(10, 81, 0, 1),
+	(11, 8, 0, 1),
+	(12, 11, 0, 0),
+	(13, 89, 0, 0),
+	(14, 89, 0, 0),
+	(15, 71, 0, 1);
 /*!40000 ALTER TABLE `pagamento` ENABLE KEYS */;
 
 -- Dumping structure for table clinica_ep.taxa
@@ -1285,17 +1349,6 @@ INSERT INTO `taxa` (`cod_especialidade`, `mes_taxa`, `valor_mes_taxa`) VALUES
 	(65, 12, 85),
 	(66, 12, 94);
 /*!40000 ALTER TABLE `taxa` ENABLE KEYS */;
-
--- Dumping structure for table clinica_ep.tratamento
-CREATE TABLE IF NOT EXISTS `tratamento` (
-  `cod_tratamento` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao_tratamento` varchar(5000) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`cod_tratamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table clinica_ep.tratamento: ~0 rows (approximately)
-/*!40000 ALTER TABLE `tratamento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tratamento` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
