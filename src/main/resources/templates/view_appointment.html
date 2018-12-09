@@ -110,6 +110,28 @@
 
 		</fieldset>
 	</form>
+	<form id="form-diag" class="" name="form-diag" action="#"
+		th:action="@{/set_diagnosis}" th:object="${temporary}" method="post">
+		<div class="form-group" th:if="${appointment.diagnosis == null}">
+			<div class="form-group" hidden>
+				<input class="form-control" th:name="code"
+					th:field="${appointment.code}" />
+			</div>
+			<div class="col-md-12">
+				<button type="submit" class="btn btn-primary btn-lg btn-block info"
+					style="background-color: brown;">Novo diagnóstico</button>
+			</div>
+		</div>
+	</form>
+	<div class="col-md-12">
+		<div name="view" th:unless="${appointment.diagnosis == null}">
+			<button type="submit"
+				class="btn btn-primary btn-lg btn-block info"
+				style="background-color: brown;"
+				th:onclick="'window.location.replace(\'view_diagnosis/' + ${appointment.code} + '\')'">Ver
+				diagnóstico</button>
+		</div>
+	</div>
 	<div class="col-md-12">
 		<button onclick='window.location.replace("index")'
 			class="btn btn-primary btn-lg btn-block info">Voltar</button>

@@ -1,5 +1,8 @@
 package system;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import dataaccess.DirectorDAO;
@@ -9,8 +12,8 @@ public class Doctor extends Employee {
 	private int crm;
 	private ArrayList<Specialty> specialtyList;
 	private Director director;
-	private String timeIn;
-	private String timeOut;
+	private LocalTime timeIn;
+	private LocalTime timeOut;
 	private int dayOff;
 	private int commission;
 
@@ -40,20 +43,46 @@ public class Doctor extends Employee {
 		this.specialtyList = specialtyList;
 	}
 
-	public String getTimeIn() {
+	public LocalTime getTimeIn() {
 		return timeIn;
 	}
 
 	public void setTimeIn(String timeIn) {
-		this.timeIn = timeIn;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		LocalTime dateTime = null;
+		try{
+			dateTime = LocalTime.parse(timeIn, formatter);
+		} catch (DateTimeParseException e) {
+			formatter = DateTimeFormatter.ofPattern("H:mm");
+			try{
+				dateTime = LocalTime.parse(timeIn, formatter);
+			} catch (DateTimeParseException e2) {
+				formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				dateTime = LocalTime.parse(timeIn, formatter);
+			}
+		}
+		this.timeIn = dateTime;
 	}
 
-	public String getTimeOut() {
+	public LocalTime getTimeOut() {
 		return timeOut;
 	}
 
 	public void setTimeOut(String timeOut) {
-		this.timeOut = timeOut;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		LocalTime dateTime = null;
+		try{
+			dateTime = LocalTime.parse(timeOut, formatter);
+		} catch (DateTimeParseException e) {
+			formatter = DateTimeFormatter.ofPattern("H:mm");
+			try{
+				dateTime = LocalTime.parse(timeOut, formatter);
+			} catch (DateTimeParseException e2) {
+				formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				dateTime = LocalTime.parse(timeOut, formatter);
+			}
+		}
+		this.timeOut = dateTime;
 	}
 
 	public int getDayOff() {

@@ -5,12 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 import system.Doctor;
 import system.Specialty;
@@ -126,10 +122,8 @@ public class DoctorDAO extends DAO {
 			preparedStatement = connection.prepareStatement(statement);
 			preparedStatement.setInt(1, lastInsertedId);
 			preparedStatement.setInt(2, doctor.getCrm());
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-			simpleDateFormat.setTimeZone(TimeZone.getTimeZone("BRT"));
-			preparedStatement.setTime(3, new Time(simpleDateFormat.parse(doctor.getTimeIn()).getTime()));
-			preparedStatement.setTime(4, new Time(simpleDateFormat.parse(doctor.getTimeOut()).getTime()));
+			preparedStatement.setString(3, doctor.getTimeIn().toString());
+			preparedStatement.setString(4, doctor.getTimeOut().toString());
 			preparedStatement.setInt(5, doctor.getDayOff());
 			preparedStatement.setInt(6, doctor.getDirector().getCode());
 			preparedStatement.setInt(7, doctor.getCommission());
@@ -158,9 +152,6 @@ public class DoctorDAO extends DAO {
 			connection.setAutoCommit(true);
 			return RESULT_DOCTOR_SUCCESS;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

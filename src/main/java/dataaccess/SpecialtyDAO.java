@@ -30,24 +30,47 @@ public class SpecialtyDAO extends DAO {
 		return specialty;
 	}
 	
-	public ArrayList<Specialty> getSpecialties(){
+	public ArrayList<Specialty> getSpecialties(boolean onlyAvailable){
 		ArrayList<Specialty> specialtyArray = new ArrayList<>();
-		String query = "SELECT * FROM especialidade ";
 		PreparedStatement preparedStatement;
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			ResultSet rs = preparedStatement.executeQuery();
-			while(rs.next()) {
-				Specialty specialty = new Specialty();
-				specialty.setCode(rs.getInt("cod_especialidade"));
-				specialty.setName(rs.getString("nome_especialidade"));
-				specialty.setValue(rs.getInt("valor_especialidade"));
-				specialtyArray.add(specialty);
+		if(!onlyAvailable) {
+			String query = "SELECT * FROM especialidade ";
+			try {
+				preparedStatement = connection.prepareStatement(query);
+				ResultSet rs = preparedStatement.executeQuery();
+				while(rs.next()) {
+					Specialty specialty = new Specialty();
+					specialty.setCode(rs.getInt("cod_especialidade"));
+					specialty.setName(rs.getString("nome_especialidade"));
+					specialty.setValue(rs.getInt("valor_especialidade"));
+					specialtyArray.add(specialty);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return specialtyArray;
+		} else {
+			String query = "SELECT * FROM especialidade NATURAL JOIN medico_especialidade ";
+			try {
+				preparedStatement = connection.prepareStatement(query);
+				ResultSet rs = preparedStatement.executeQuery();
+				while(rs.next()) {
+					Specialty specialty = new Specialty();
+					specialty.setCode(rs.getInt("cod_especialidade"));
+					specialty.setName(rs.getString("nome_especialidade"));
+					specialty.setValue(rs.getInt("valor_especialidade"));
+					specialtyArray.add(specialty);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return specialtyArray;
 		}
-		return specialtyArray;
+	}
+	
+	public ArrayList<Specialty> getSpecialties(){
+		return getSpecialties(false);
 	}
 }

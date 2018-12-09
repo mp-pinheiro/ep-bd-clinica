@@ -20,6 +20,7 @@ public class Appointment {
 	private Specialty type;
 	private boolean status;
 	private Payment payment;
+	private Diagnosis diagnosis;
 
 	public int getCode() {
 		return code;
@@ -118,5 +119,18 @@ public class Appointment {
 
 	public void setTypeInstance(Specialty specialty) {
 		this.type = specialty;		
+	}
+
+	public Diagnosis getDiagnosis() {
+		return diagnosis;
+	}
+
+	public void setDiagnosis(Diagnosis diagnosis) {
+		this.diagnosis = diagnosis;
+	}
+	
+	public static void main(String[] args) {
+		Appointment a = new Appointment();
+		a.setTime("18:00:00");
 	}
 }

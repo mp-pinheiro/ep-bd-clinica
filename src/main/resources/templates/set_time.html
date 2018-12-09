@@ -82,7 +82,7 @@
 			<div class="form-group">
 				<div class="col-md-12">
 					<label class="control-label" for="time" multiple>Horário da
-						Consulta</label> <select class="form-control" id="time" th:field="*{time}">
+						Consulta</label> <select class="form-control" id="time" th:field="*{time}" required>
 						<option th:each="time: ${times}" th:value="${time}"
 							th:utext="${time}"></option>
 					</select>

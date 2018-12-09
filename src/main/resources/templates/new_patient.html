@@ -12,6 +12,9 @@
 		href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
 	<script src="sweetalert2/dist/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
+	<link rel="stylesheet"
+		href="https://code.jquery.com/ui/jquery-ui-git.css">
+	<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
 </header>
 
 <head>
@@ -32,15 +35,18 @@
 				<div class="col-md-6">
 					<label class="control-label" for="nome">Nome Completo</label> <input
 						id="name" class="form-control" placeholder="João Pereira da Silva"
-						type="text" th:field="*{name}">
+						type="text" th:field="*{name}"
+						pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-6">
 					<label class="control-label" for="tel">Telefone</label> <input
-						id="tel" class="form-control" placeholder="90000-0000" type="text"
-						th:field="*{phone}">
+						id="tel" class="form-control" placeholder="(99) 9 0000 0000"
+						type="text" th:field="*{phone}"
+						pattern="[(][0-9][0-9][)] [0-9] [0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9]"
+						required>
 				</div>
 			</div>
 
@@ -49,22 +55,55 @@
 					<label class="control-label" for="email">Email</label> <input
 						id="email" class="form-control"
 						placeholder="joao.pereira.silva@gmail.com" type="text"
-						th:field="*{email}">
+						th:field="*{email}"
+						pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+						required>
 				</div>
 			</div>
+
+			<script>
+				$(function() {
+					$("#datepicker").datepicker({
+						dateFormat: 'dd-mm-yy',
+						yearRange : "-110:+0",
+						maxDate : new Date(),
+						changeYear : true,
+						editable : true
+					});
+				});
+
+				function checkDate() {
+					if ($('#datepicker').val() == '') {
+						$('#datepicker').addClass('invalid')
+						return false
+					} else {
+						$('#datepicker').removeClass('invalid')
+						return true
+					}
+				}
+
+				$('form').submit(function() {
+					return checkDate();
+				});
+
+				$('#datepicker').change(function() {
+					checkDate();
+				});
+			</script>
 
 			<div class="form-group">
 				<div class="col-md-6">
 					<label class="control-label" for="district">Data de
-						Nascimento</label> <input id="birth" class="form-control"
-						placeholder="01/01/1901" type="text" th:field="*{birthDate}">
+						Nascimento</label> <input class="form-control" type="text" id="datepicker"
+						th:field="*{birthDate}" readonly required>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-6">
 					<label class="control-label" for="nome">Sexo</label> <select
-						th:field="*{sex}" class="form-control custom-select" id="sex">
+						th:field="*{sex}" class="form-control custom-select" id="sex"
+						required>
 						<option value="M">Masculino</option>
 						<option value="F">Feminino</option>
 					</select>
@@ -75,7 +114,9 @@
 				<div class="col-md-6">
 					<label class="control-label" for="district">CPF</label> <input
 						id="cpf" class="form-control" placeholder="000.000.000-00"
-						type="text" th:field="*{cpf}">
+						type="text" th:field="*{cpf}"
+						patter="[0-9][0-9][0-9][.][0-9][0-9][0-9][.][0-9][0-9][0-9][-][0-9][0-9]"
+						required>
 				</div>
 			</div>
 
@@ -87,7 +128,8 @@
 		</fieldset>
 	</form>
 	<div class="col-md-12">
-		<button onclick='window.location.replace("index")' class="btn btn-primary btn-lg btn-block info">Voltar</button>
+		<button onclick='window.location.replace("index")'
+			class="btn btn-primary btn-lg btn-block info">Voltar</button>
 	</div>
 </div>
 
@@ -99,6 +141,6 @@
 		"mask" : "999.999.999-99"
 	});
 	$("#birth").inputmask({
-		"mask" : "99/99/9999"
+		"datepicker" : "99/99/9999"
 	});
 </script>

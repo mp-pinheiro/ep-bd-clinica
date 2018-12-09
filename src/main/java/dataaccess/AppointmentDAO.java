@@ -93,6 +93,9 @@ public class AppointmentDAO extends DAO{
 				appointment.setDateTime(rs.getTimestamp("data_consulta"));
 				appointment.setStatus(rs.getBoolean("status_consulta"));
 				appointment.setType(rs.getInt("tipo_consulta"));
+				DiagnosisDAO diagnosisDAO = new DiagnosisDAO();
+				appointment.setDiagnosis(diagnosisDAO.getDiagnosisByAppointment(appointment.getCode()));
+				diagnosisDAO.closeConnection();
 				appointment.setPayment();
 								
 				return appointment;
@@ -104,6 +107,44 @@ public class AppointmentDAO extends DAO{
 		return null;
 	}
 
+	public ArrayList<Appointment> getAppointmentsFromDoctor(int code){
+		String query = "SELECT * FROM consulta NATURAL JOIN cliente NATURAL JOIN funcionario JOIN especialidade ON (especialidade.cod_especialidade = consulta.tipo_consulta) "
+				+ "WHERE cod_funcionario = ? ";
+		PreparedStatement preparedStatement;
+		ArrayList<Appointment> appointmentList = new ArrayList<>();
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, code);
+			ResultSet rs = preparedStatement.executeQuery();
+			while(rs.next()) {
+				appointmentList.add(getAppointment(rs));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return appointmentList;
+	}
+	
+	public ArrayList<Appointment> getAppointmentsFromPatient(int code){
+		String query = "SELECT * FROM consulta NATURAL JOIN cliente NATURAL JOIN funcionario JOIN especialidade ON (especialidade.cod_especialidade = consulta.tipo_consulta) "
+				+ "WHERE cod_cliente = ? ";
+		PreparedStatement preparedStatement;
+		ArrayList<Appointment> appointmentList = new ArrayList<>();
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, code);
+			ResultSet rs = preparedStatement.executeQuery();
+			while(rs.next()) {
+				appointmentList.add(getAppointment(rs));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return appointmentList;
+	}
+	
 	public ArrayList<Appointment> getAppointments(){
 		String query = "SELECT * FROM consulta NATURAL JOIN cliente NATURAL JOIN funcionario JOIN especialidade ON (especialidade.cod_especialidade = consulta.tipo_consulta)";
 		PreparedStatement preparedStatement;
@@ -112,30 +153,34 @@ public class AppointmentDAO extends DAO{
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next()) {
-				Appointment appointment = new Appointment();
-				appointment.setCode(rs.getInt("cod_consulta"));
-				Doctor doctor = new Doctor();
-				doctor.setName(rs.getString("nome_funcionario"));
-				doctor.setCode(rs.getInt("cod_funcionario"));
-				appointment.setDoctorInstance(doctor);
-				Patient patient = new Patient();
-				patient.setCode(rs.getInt("cod_cliente"));
-				patient.setName(rs.getString("nome_cliente"));
-				appointment.setPatientInstance(patient);
-				appointment.setDateTime(rs.getTimestamp("data_consulta"));
-				appointment.setStatus(rs.getBoolean("status_consulta"));
-				Specialty specialty = new Specialty();
-				specialty.setCode(rs.getInt("tipo_consulta"));
-				specialty.setName(rs.getString("nome_especialidade"));
-				appointment.setTypeInstance(specialty);
-				appointment.setPayment();
-								
-				appointmentList.add(appointment);
+				appointmentList.add(getAppointment(rs));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return appointmentList;
+	}
+	
+	private Appointment getAppointment(ResultSet rs) throws SQLException {
+		Appointment appointment = new Appointment();
+		appointment.setCode(rs.getInt("cod_consulta"));
+		Doctor doctor = new Doctor();
+		doctor.setName(rs.getString("nome_funcionario"));
+		doctor.setCode(rs.getInt("cod_funcionario"));
+		appointment.setDoctorInstance(doctor);
+		Patient patient = new Patient();
+		patient.setCode(rs.getInt("cod_cliente"));
+		patient.setName(rs.getString("nome_cliente"));
+		appointment.setPatientInstance(patient);
+		appointment.setDateTime(rs.getTimestamp("data_consulta"));
+		appointment.setStatus(rs.getBoolean("status_consulta"));
+		Specialty specialty = new Specialty();
+		specialty.setCode(rs.getInt("tipo_consulta"));
+		specialty.setName(rs.getString("nome_especialidade"));
+		appointment.setTypeInstance(specialty);
+		appointment.setPayment();
+		
+		return appointment;
 	}
 }

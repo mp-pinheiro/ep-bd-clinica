@@ -30,6 +30,7 @@ public class PatientDAO extends DAO{
 				patient.setCpf(rs.getString("cpf_paciente"));
 				patient.setBirthDate(rs.getString("data_nasc_paciente"));
 				patient.setSex(rs.getString("sexo_paciente"));
+				patient.setEmail(rs.getString("email_paciente"));
 				list.add(patient);
 			}
 		} catch (SQLException e) {
@@ -86,14 +87,14 @@ public class PatientDAO extends DAO{
             }
 			
 			//Patient insertion SQL
-			statement = "INSERT INTO paciente (cod_cliente, cpf_paciente, data_nasc_paciente, sexo_paciente) "
-					+ "VALUES (?, ?, ?, ?)";
+			statement = "INSERT INTO paciente (cod_cliente, cpf_paciente, data_nasc_paciente, sexo_paciente, email_paciente) "
+					+ "VALUES (?, ?, ?, ?, ?)";
 			
 			//Creates statement
 			preparedStatement = connection.prepareStatement(statement);
 			preparedStatement.setInt(1, last_inserted_id);
 			preparedStatement.setString(2, cpf);
-			SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
 			java.util.Date date;
 			try {
 				date = sdf1.parse(patient.getBirthDate());
@@ -103,6 +104,7 @@ public class PatientDAO extends DAO{
 				e.printStackTrace();
 			}
 			preparedStatement.setString(4, patient.getSex());
+			preparedStatement.setString(5, patient.getEmail());
 			
 			//Inserts client
 			preparedStatement.execute();
@@ -136,6 +138,7 @@ public class PatientDAO extends DAO{
 				patient.setCpf(rs.getString("cpf_paciente"));
 				patient.setBirthDate(rs.getString("data_nasc_paciente"));
 				patient.setSex(rs.getString("sexo_paciente"));
+				patient.setEmail(rs.getString("email_paciente"));
 				
 				return patient;
 			}
